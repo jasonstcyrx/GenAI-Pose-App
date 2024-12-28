@@ -1,0 +1,173 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "HumanMotion",
+    "type": "object",
+    "properties": {
+        "snapshot_id": {
+            "type": "integer",
+            "description": "Unique identifier for the snapshot"
+        },
+        "recording_data": {
+            "type": "object",
+            "description": "Information about the recording",
+            "properties": {
+                "start_time": {
+                    "type": "number",
+                    "description": "Start time of the recording in seconds"
+                }
+            },
+            "required": ["start_time"]
+        },
+        "timestamp": {
+            "type": "integer",
+            "description": "Timestamp of the snapshot in milliseconds"
+        },
+        "elapsed_time": {
+            "type": "number",
+            "description": "Elapsed time in milliseconds"
+        },
+        "instruction": {
+            "type": "string",
+            "description": "Instruction text"
+        },
+        "intent": {
+            "type": "string",
+            "description": "Intent text"
+        },
+        "audio": {
+            "type": "string",
+            "description": "Path or identifier for the audio file"
+        },
+        "video": {
+            "type": "string",
+            "description": "Path or identifier for the video file"
+        },
+        "joint_outputs": {
+            "type": "array",
+            "description": "A series of joint outputs represented as arrays of three numbers",
+            "items": {
+                "type": "array",
+                "description": "Individual joint output",
+                "items": {
+                    "type": "number",
+                    "description": "Joint coordinate value"
+                },
+                "minItems": 3,
+                "maxItems": 3
+            },
+            "minItems": 1,
+            "description": "Array containing joint outputs, each with three numerical values"
+        },
+        "post_processing": {
+            "type": "object",
+            "description": "Results after post-processing",
+            "properties": {
+                "detected_objects": {
+                    "type": "array",
+                    "description": "List of detected objects in the frame",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "label": {
+                                "type": "string",
+                                "description": "Label of the detected object"
+                            },
+                            "score": {
+                                "type": "number",
+                                "description": "Confidence score of the detected object",
+                                "minimum": 0,
+                                "maximum": 1
+                            },
+                            "box": {
+                                "type": "array",
+                                "description": "Bounding box of the detected object [x, y, width, height]",
+                                "items": {
+                                    "type": "number"
+                                },
+                                "minItems": 4,
+                                "maxItems": 4
+                            }
+                        },
+                        "required": ["label", "score", "box"]
+                    }
+                },
+                "emotions": {
+                    "type": "array",
+                    "description": "List of detected emotions",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "dominant_emotion": {
+                                "type": "string",
+                                "description": "Dominant emotion detected"
+                            },
+                            "emotions": {
+                                "type": "object",
+                                "description": "Scores for each emotion",
+                                "properties": {
+                                    "angry": { "type": "number" },
+                                    "disgust": { "type": "number" },
+                                    "fear": { "type": "number" },
+                                    "happy": { "type": "number" },
+                                    "sad": { "type": "number" },
+                                    "surprise": { "type": "number" },
+                                    "neutral": { "type": "number" }
+                                },
+                                "required": ["angry", "disgust", "fear", "happy", "sad", "surprise", "neutral"]
+                            },
+                            "region": {
+                                "type": "object",
+                                "description": "Region of the emotion detection",
+                                "properties": {
+                                    "x": { "type": "number", "description": "X-coordinate of the region" },
+                                    "y": { "type": "number", "description": "Y-coordinate of the region" },
+                                    "w": { "type": "number", "description": "Width of the region" },
+                                    "h": { "type": "number", "description": "Height of the region" },
+                                    "left_eye": {
+                                        "anyOf": [
+                                            { "type": "object" },
+                                            { "type": "null" }
+                                        ],
+                                        "description": "Details of the left eye if detected"
+                                    },
+                                    "right_eye": {
+                                        "anyOf": [
+                                            { "type": "object" },
+                                            { "type": "null" }
+                                        ],
+                                        "description": "Details of the right eye if detected"
+                                    }
+                                },
+                                "required": ["x", "y", "w", "h", "left_eye", "right_eye"]
+                            }
+                        },
+                        "required": ["dominant_emotion", "emotions", "region"]
+                    }
+                },
+                "keypoints": {
+                    "type": "array",
+                    "description": "List of keypoints detected in the frame",
+                    "items": {
+                        "type": "object",
+                        "description": "Individual keypoint data"
+                        
+
+                    }
+                }
+            },
+            "required": ["detected_objects", "emotions", "keypoints"]
+        }
+    },
+    "required": [
+        "snapshot_id",
+        "recording_data",
+        "timestamp",
+        "elapsed_time",
+        "instruction",
+        "intent",
+        "audio",
+        "video",
+        "joint_outputs",
+        "post_processing"
+    ]
+}

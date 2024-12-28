@@ -128,3 +128,25 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# venv
+venv/
+
+# recordings
+data/
+# ds_store
+.DS_Store
+
+# python stuff
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# vscode
+.vscode/
+
+# yarn 
+
+# pytorch models 
+*.pth
